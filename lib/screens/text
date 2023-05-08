@@ -1,0 +1,23 @@
+    ToggleButton(callbackFunction: getSaveLocation,),
+    FloatingActionButton.extended(onPressed: ()
+    {
+        //creates ToDo item
+        var todo = Todo(
+            id: idGenerator(),
+            title: controllerTask.value.text,
+            description: controllerDescription.value.text,
+            isRemote: remoteTask,
+        );
+
+        print("the value of is remote");
+        print(todo.isRemote);
+
+        //get Todos bloc add new item
+        context.read<TodosBloc>().add(AddTodo(todo: todo));
+
+        Navigator.pop(context);
+    },
+    label: const Text('add task',
+    style: TextStyle(color: Colors.black),
+  ),
+
