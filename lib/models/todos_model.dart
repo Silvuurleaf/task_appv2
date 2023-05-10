@@ -23,8 +23,9 @@ class Todo extends Equatable{
   }) {
     isCanceled = isCanceled ?? false;
     isCompleted = isCompleted ?? false;
-    isRemote = isCompleted ?? false;
+    isRemote = isRemote ?? false;
   }
+
 
   factory Todo.fromFireStore(DocumentSnapshot snapshot){
 
