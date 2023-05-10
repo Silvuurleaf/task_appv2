@@ -46,11 +46,13 @@ class TodosBloc extends Bloc<TodoEvent, TodosState> {
   Future<void> _onDeleteTodo(DeleteTodo event, Emitter<TodosState> emit,) async {
     final state = this.state;
     if (state is TodosLoaded) {
+
       List<Todo?> todos = (state.todos.where((todo) {
         return todo?.id != event.todo.id;
       })).toList();
 
       //int sqlId = event.todo.id;
+
       await todosRepository.delete(event.todo);
 
       emit(TodosLoaded(todos: todos));

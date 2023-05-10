@@ -93,8 +93,7 @@ class _AddTodoScreen extends State<AddTodoScreen> {
 
                             //get Todos bloc add new item
                             context.read<TodosBloc>().add(AddTodo(todo: todo));
-                            //update
-                            //delete
+
 
                             Navigator.pop(context);
                           },

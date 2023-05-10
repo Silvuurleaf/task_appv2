@@ -33,8 +33,14 @@ class RemoteDataSource {
     });
   }
 
-  Future<int> delete(int id) async {
-    throw UnimplementedError();
+  Future delete(String id) async {
+
+    final snapShot = await taskCollection.where("id", isEqualTo: id).get();
+
+    snapShot.docs.forEach((doc) async => {
+
+      await taskCollection.doc(doc.id).delete()
+    });
   }
 
   Future<int> update(Todo todo) async {

@@ -39,7 +39,13 @@ class TodoRepository<Todo> extends IRepository {
 
   @override
   Future<void> delete(todo) async {
-    await localSqlLiteRepository.delete(todo.id);
+
+    if(todo.isRemote == true){
+      await firebaseRepository.delete(todo.id);
+    }
+    else{
+      await localSqlLiteRepository.delete(todo.id);
+    }
   }
 
   @override
