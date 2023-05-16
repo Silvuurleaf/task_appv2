@@ -33,18 +33,44 @@ class RemoteDataSource {
     });
   }
 
-  Future delete(String id) async {
+  Future delete(Todo todo) async {
 
+    int id = todo.id;
+
+    final snapShot = await taskCollection.where("id", isEqualTo: id).get();
+
+    //snapShot.docs.forEach((doc) {
+    //  print('${doc.id} => ${doc.data()}');
+    //});
+
+    snapShot.docs.forEach((doc) async => {
+
+      await taskCollection.doc(doc.id).delete().then(
+            (doc) => print("Document deleted"),
+            onError: (e) => print("Error updating document $e"),
+      )
+    });
+
+  }
+
+  Future update(Todo todo) async {
+
+    String id = todo.id as String;
     final snapShot = await taskCollection.where("id", isEqualTo: id).get();
 
     snapShot.docs.forEach((doc) async => {
 
-      await taskCollection.doc(doc.id).delete()
+      await taskCollection.doc(doc.id).update({
+        'id': todo.id,
+        'title': todo.title,
+        'description': todo.description,
+        'isCompleted': todo.isCompleted,
+        'isCanceled': todo.isCanceled,
+        'isRemote': true,
+      })
     });
-  }
 
-  Future<int> update(Todo todo) async {
-    throw UnimplementedError();
+
   }
 
 }

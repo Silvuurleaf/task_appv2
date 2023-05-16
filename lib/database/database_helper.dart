@@ -52,7 +52,8 @@ class DatabaseHelper {
     return await db.insert(_dbNameReference, todo.toMap());
   }
 
-  Future<int> delete(int id) async {
+  Future<int> delete(Todo todo) async {
+    int id = todo.id;
     Database db = _db;
     return await db.delete(_dbNameReference, where: 'id = ?', whereArgs: [id]);
   }
