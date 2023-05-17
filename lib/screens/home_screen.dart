@@ -41,8 +41,9 @@ class HomeScreen extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) {
                         return Dismissible(
                             key: ValueKey(state.todos[index]!.id),
-                            background: Container(
-                              color: const Color(0xFFACDDD7),
+                            background: const Card(
+                              color: Color(0xFFC9A7EB),
+                              margin: EdgeInsets.all(8.0),
                             ),
 
                             onDismissed: (DismissDirection direction){
@@ -75,37 +76,56 @@ class HomeScreen extends StatelessWidget {
 
   Card _todoCard(BuildContext context, Todo todo) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8.0),
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: InkWell(
+      color: Colors.white30,
+      child: ClipPath(
 
-            onTap:(){
-              //fire an edit toDo event
-              context.read<TodosBloc>().add(EditTodo(todo: todo));
-              int? editingTaskId = todo.id;
-              print("The editing task id: $editingTaskId");
-              context.push('/editTask/$editingTaskId');
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 8.0),
+          decoration: const BoxDecoration (
+              border: Border(
+                left: BorderSide(color: Color(0xFFAA77FF), width: 5),
+              ),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InkWell(
 
-            } ,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                //#${todo.id}:
-                Text(todo.title),
-                Row(
+                onTap:(){
+                  //fire an edit toDo event
+                  context.read<TodosBloc>().add(EditTodo(todo: todo));
+                  int? editingTaskId = todo.id;
+                  print("The editing task id: $editingTaskId");
+                  context.push('/editTask/$editingTaskId');
+
+                } ,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(onPressed: () {
-                      context.read<TodosBloc>().add(
-                        DeleteTodo(todo: todo),
-                      );
-                    }, icon: const Icon(Icons.cancel)),
+                    //#${todo.id}:
+                    Text(
+                        todo.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        )
+                    ),
+                    Row(
+                      children: [
+                        IconButton(onPressed: () {
+                          context.read<TodosBloc>().add(
+                            DeleteTodo(todo: todo),
+                          );
+                        }, icon: const Icon(Icons.cancel)),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          )
-      ),
+                ),
+              )
+          ),
+        ),
+
+      )
+
     );
   }
 

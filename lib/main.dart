@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_navigation/src/routes/default_transitions.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:taskapp_mvvm/database/database_helper.dart';
@@ -19,6 +21,7 @@ import 'data_layer/todo_repository.dart';
 
 
 
+
 final _router = GoRouter(
     initialLocation: '/',
     routes:[
@@ -29,10 +32,30 @@ final _router = GoRouter(
           GoRoute(
             path: "editTask/:taskId",
             name: "editTasks",
+            pageBuilder: (context, state) {
+              String? id = state.params['taskId'];
+
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: EditTodoScreen(taskId: id),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(
+                        opacity: CurveTween(curve: Curves.easeIn).animate(animation),
+                        child: child
+                    ),
+              );
+            },
+
+            /*
             builder: (BuildContext context, GoRouterState state) {
               String? id = state.params['taskId'];
               return EditTodoScreen(taskId: id);
             },
+
+             */
+
+
+
           )
         ],
       ),
@@ -40,7 +63,18 @@ final _router = GoRouter(
       //create task path
       GoRoute(
         path:'/createTasks',
-        builder: (context, state)=> AddTodoScreen(),
+        pageBuilder: (context, state) {
+
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: AddTodoScreen(),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                FadeTransition(
+                    opacity: CurveTween(curve: Curves.easeIn).animate(animation),
+                    child: child
+                ),
+          );
+        },
       )
     ]
 );
@@ -94,10 +128,25 @@ class MyApp extends StatelessWidget {
         ],
           child: MaterialApp.router(
             title: 'task-app-v2-bloc-repo',
-            theme: basic,
+            theme: ThemeData(
+              fontFamily: GoogleFonts.lato().fontFamily,
+                //scaffoldBackgroundColor: const Color(0xFFAA77FF),
+                //primaryColor: const Color(0xFFC9EEFF),
+                appBarTheme: AppBarTheme(
+                  color: const Color(0xFFAA77FF),
+                  titleTextStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20,
+                    fontFamily: GoogleFonts.lato().fontFamily,
+                  ),
+                ),
+            ),
             routerConfig: _router,
           ),
       );
   }
 }
+
+//B4E4FF light bluish
 

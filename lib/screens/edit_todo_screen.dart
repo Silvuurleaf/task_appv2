@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../bloc/todos/todos_bloc.dart';
 import '../models/todos_model.dart';
@@ -69,7 +70,8 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                         );
 
                         context.read<TodosBloc>().add(UpdateTodo(todo: todo));
-                        Navigator.pop(context);
+                        context.push('/');
+                        //TODO when I push not loading all the tasks
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Theme

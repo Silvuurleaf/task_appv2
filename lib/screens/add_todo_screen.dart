@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../bloc/todos/todos_bloc.dart';
 import '../models/todos_model.dart';
@@ -48,6 +49,7 @@ class _AddTodoScreen extends State<AddTodoScreen> {
     }
 
     return Scaffold(
+
       appBar: AppBar(
         title: const Text('BloC Pattern: Add a To Do'),
       ),
@@ -77,30 +79,6 @@ class _AddTodoScreen extends State<AddTodoScreen> {
 
                         ToggleButton(callbackFunction: getSaveLocation,),
 
-                        FloatingActionButton.extended(
-                          onPressed: () {
-                            //creates ToDo item
-
-                            var todo = Todo(
-                              id: idGenerator(),
-                              title: controllerTask.value.text,
-                              description: controllerDescription.value.text,
-                              isRemote: remoteTask,
-                            );
-
-                            print("the value of is remote");
-                            print(todo.isRemote);
-
-                            //get Todos bloc add new item
-                            context.read<TodosBloc>().add(AddTodo(todo: todo));
-
-
-                            Navigator.pop(context);
-                          },
-                          label: const Text('add task',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -123,6 +101,36 @@ class _AddTodoScreen extends State<AddTodoScreen> {
           ),
         ),
       ),
+
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: const Color(0xFFAA77FF),
+        onPressed: () {
+          //creates ToDo item
+
+          var todo = Todo(
+            id: idGenerator(),
+            title: controllerTask.value.text,
+            description: controllerDescription.value.text,
+            isRemote: remoteTask,
+          );
+
+          print("the value of is remote");
+          print(todo.isRemote);
+
+          //get Todos bloc add new item
+          context.read<TodosBloc>().add(AddTodo(todo: todo));
+
+          Navigator.pop(context);
+        },
+        label: Text('add task',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            fontFamily: GoogleFonts.lato().fontFamily,
+          ),
+        ),
+      ),
     );
   }
 
@@ -139,8 +147,18 @@ class _AddTodoScreen extends State<AddTodoScreen> {
           width: double.infinity,
           child: TextFormField(
 
+            style: TextStyle(
+                fontFamily: GoogleFonts.lato().fontFamily,
+                color: Colors.black,
+                fontSize: 27
+            ),
             decoration: InputDecoration.collapsed(
-                hintText: field
+              hintText: field,
+              hintStyle: TextStyle(
+                fontFamily: GoogleFonts.lato().fontFamily,
+                color: Colors.black.withOpacity(0.3),
+                fontSize: 27
+              )
             ),
             controller: controller,
 
