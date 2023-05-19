@@ -17,6 +17,11 @@ class EditTodoScreen extends StatefulWidget {
 
 class _EditTodoScreenState extends State<EditTodoScreen> {
 
+  int idGenerator() {
+    final now = DateTime.now();
+    return now.microsecondsSinceEpoch;
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerId = TextEditingController();
@@ -45,6 +50,7 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
             String taskIdString = widget.taskId;
             String taskTitle = task.title;
             String taskDesc = task.description;
+            bool isRemote = task.isRemote;
 
             print("task title: $taskTitle");
             print("task desc: $taskDesc");
@@ -63,13 +69,30 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
                     _inputField('Description', controllerDescription),
                     ElevatedButton(
                       onPressed: () {
-                        var todo = Todo(
-                          id: int.parse(controllerId.value.text),
-                          title: controllerTask.value.text,
-                          description: controllerDescription.value.text,
-                        );
+
+                        var todo;
+
+                        if(isRemote){
+                          todo = Todo(
+                            id: idGenerator(),
+                            title: controllerTask.value.text,
+                            description: controllerDescription.value.text,
+                            isRemote: isRemote,
+                            remoteId: taskIdString,
+                          );
+                        }
+                        else{
+                          todo = Todo(
+                            id: int.parse(taskIdString),
+                            title: controllerTask.value.text,
+                            description: controllerDescription.value.text,
+                            isRemote: isRemote,
+                            remoteId: taskIdString,
+                          );
+                        }
 
                         context.read<TodosBloc>().add(UpdateTodo(todo: todo));
+                        //context.read<TodosBloc>().add(const LoadTodos());
                         context.push('/');
                         //TODO when I push not loading all the tasks
                       },

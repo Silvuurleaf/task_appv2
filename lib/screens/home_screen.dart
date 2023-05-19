@@ -96,7 +96,6 @@ class HomeScreen extends StatelessWidget {
                   int? editingTaskId = todo.id;
                   print("The editing task id: $editingTaskId");
                   context.push('/editTask/$editingTaskId');
-
                 } ,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

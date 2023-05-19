@@ -27,7 +27,7 @@ class RemoteDataSource {
       'id': todo.id,
       'title': todo.title,
       'description':todo.description,
-      'shared': true,
+      'isRemote': true,
       'isCanceled': todo.isCanceled,
       'isCompleted':todo.isCompleted,
     });
@@ -58,6 +58,9 @@ class RemoteDataSource {
     String id = todo.id as String;
     final snapShot = await taskCollection.where("id", isEqualTo: id).get();
 
+    print("todo title");
+    print(todo.title);
+
     snapShot.docs.forEach((doc) async => {
 
       await taskCollection.doc(doc.id).update({
@@ -67,9 +70,11 @@ class RemoteDataSource {
         'isCompleted': todo.isCompleted,
         'isCanceled': todo.isCanceled,
         'isRemote': true,
-      })
+      }).then(
+            (doc) => print("Document updated"),
+            onError: (e) => print("Error updating document $e"),
+      )
     });
-
 
   }
 

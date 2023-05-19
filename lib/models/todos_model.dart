@@ -2,6 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
+
+//TODO clean this model up and have a better universal ID for todos that integrates well with firebase
+
 class Todo extends Equatable{
 
   final int id;
@@ -10,20 +13,23 @@ class Todo extends Equatable{
 
   bool? isCompleted;
   bool? isCanceled;
-
   bool? isRemote;
+
+  String? remoteId;
 
   Todo({
     required this.id,
     required this.title,
     required this.description,
     this.isRemote,
+    this.remoteId,
     this.isCanceled,
     this.isCompleted
   }) {
     isCanceled = isCanceled ?? false;
     isCompleted = isCompleted ?? false;
     isRemote = isRemote ?? false;
+    remoteId = remoteId ?? "";
   }
 
 
@@ -35,13 +41,15 @@ class Todo extends Equatable{
       description: snapshot.get('description'),
       isCompleted: snapshot.get('isCompleted'),
       isCanceled: snapshot.get('isCanceled'),
+      isRemote: snapshot.get('isRemote'),
+      remoteId: snapshot.get(snapshot.id),
     );
 
   }
 
   Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
+      'id': remoteId,
       'title': title,
       'description': description,
     };
@@ -55,6 +63,7 @@ class Todo extends Equatable{
     bool? isCompleted,
     bool? isCanceled,
     bool? isRemote,
+    String? remoteId,
   }) {
     return Todo(
       id: id ?? this.id,
@@ -63,10 +72,13 @@ class Todo extends Equatable{
       isCompleted: isCompleted ?? this.isCompleted,
       isCanceled: isCanceled ?? this.isCanceled,
       isRemote: isRemote ?? this.isRemote,
+      remoteId: remoteId ?? this.remoteId,
     );
   }
 
 
+
+  //LOCAL DATABASE
 
   factory Todo.fromMap(Map<String, dynamic> json) => Todo(
     id: json['id'],
@@ -98,6 +110,7 @@ class Todo extends Equatable{
     isCompleted,
     isCanceled,
     isRemote,
+    remoteId,
   ];
 
   factory Todo.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document){
@@ -109,6 +122,7 @@ class Todo extends Equatable{
       isCompleted: data['isCompleted'],
       isCanceled: data['isCanceled'],
       isRemote: true,
+      remoteId: data['remoteId'],
     );
   }
 
@@ -120,7 +134,7 @@ class Todo extends Equatable{
       description: map['description'],
       isCompleted: map['isCompleted'],
       isCanceled: map['isCanceled'],
-      isRemote: map['isRemote']
+      isRemote: map['isRemote'],
     );
 
   }

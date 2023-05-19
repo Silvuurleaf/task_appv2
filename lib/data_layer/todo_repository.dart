@@ -74,10 +74,13 @@ class TodoRepository<Todo> extends IRepository {
   @override
   Future<void> update(todo) async {
 
+    print(todo.isRemote);
     if(todo.isRemote == true){
+      print("updating remote");
       await firebaseRepository.update(todo);
     }
     else{
+      print("updating local");
       await localSqlLiteRepository.update(todo);
     }
 

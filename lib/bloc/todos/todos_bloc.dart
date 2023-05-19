@@ -62,11 +62,11 @@ class TodosBloc extends Bloc<TodoEvent, TodosState> {
   void _onUpdateTodo(UpdateTodo event, Emitter<TodosState> emit,) async {
     final state = this.state;
     if (state is TodosLoaded) {
-      //List<Todo?> todos = (state.todos.map((todo) {
-      //  return todo?.id == event.todo.id ? event.todo : todo;
-      //})).toList();
+      List<Todo?> todos = (state.todos.map((todo) {
+        return todo?.id == event.todo.id ? event.todo : todo;
+      })).toList();
 
-      List<Todo?> todos = [event.todo];
+      //List<Todo?> todos = [event.todo];
 
       await todosRepository.update(event.todo);
 

@@ -107,6 +107,8 @@ class _AddTodoScreen extends State<AddTodoScreen> {
         onPressed: () {
           //creates ToDo item
 
+          //TODO add a check for if something is remote then set a remoteID field
+
           var todo = Todo(
             id: idGenerator(),
             title: controllerTask.value.text,
